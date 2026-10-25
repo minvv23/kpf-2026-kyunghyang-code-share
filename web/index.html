@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>월간 기사 성과 리포트</title>
+<style>
+  body { margin: 0; font-family: sans-serif; display: flex; min-height: 100vh; }
+  aside { width: 200px; background: #222; color: #ddd; padding: 16px; }
+  aside a { display: block; color: #ddd; padding: 8px 0; cursor: pointer; }
+  aside .foot { margin-top: 40px; font-size: 11px; color: #999; }
+  main { flex: 1; padding: 20px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<aside>
+  <b>월간 기사 성과 리포트</b>
+  <a data-view="month">월간 대시보드</a>
+  <a data-view="trend">가중치 트렌드</a>
+  <a data-view="sim">개별 기사 예측 시뮬레이터</a>
+  <a data-view="attrs">속성 추출 결과</a>
+  <div class="foot">본 시스템(서비스)은 한국언론진흥재단의 지원을 받아 개발되었습니다.</div>
+</aside>
+<main>
+  <section id="month"><h2>월간 대시보드</h2><div id="month-body"></div></section>
+  <section id="trend" class="hidden"><h2>가중치 트렌드</h2><div id="trend-body"></div></section>
+  <section id="sim" class="hidden"><h2>개별 기사 예측 시뮬레이터</h2><div id="sim-body"></div></section>
+  <section id="attrs" class="hidden"><h2>속성 추출 결과</h2><div id="attrs-body"></div></section>
+</main>
+<script>
+  // 데이터 API 주소는 각사 환경에 맞게 지정한다.
+  const API = "";
+
+  document.querySelectorAll("aside a").forEach(a => a.onclick = () => {
+    document.querySelectorAll("main section").forEach(s => s.classList.toggle("hidden", s.id !== a.dataset.view));
+  });
+
+  // 월간 리포트(JSON, docs/data_schema.md 5절)를 받아 화면에 그린다.
+  async function loadMonth(month) {
+    if (!API) return;
+    const data = await fetch(`${API}?mode=month&m=${month || ""}`).then(r => r.json());
+    document.getElementById("month-body").textContent = JSON.stringify(data.kpi);
+  }
+  loadMonth();
+</script>
+</body>
+</html>

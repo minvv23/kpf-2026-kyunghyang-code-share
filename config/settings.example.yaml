@@ -1,0 +1,17 @@
+# settings.yaml 예시. 복사해서 config/settings.yaml로 쓴다. 환경변수가 있으면 환경변수가 우선한다.
+
+storage_root: ./data
+log_level: INFO
+
+# LLM
+llm_model: ""
+llm_max_chars: 4000
+llm_retries: 3
+
+# 학습 설정 (각사 데이터에 맞춰 지정)
+label_days: 1
+train_days:
+interp_days:
+holdout_days:
+n_rounds: 100
+model_params: {}
